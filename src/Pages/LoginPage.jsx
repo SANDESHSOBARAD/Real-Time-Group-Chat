@@ -1,5 +1,19 @@
 import Logo from '../assets/chatapplogo.avif'
+import { UserAuth } from '../context/AuthContext'
+
+
 const LoginPage = () => {
+
+  const {currUser, signInWithGoogle} = UserAuth();
+  console.log(currUser)
+
+  const handleLogin = async () => {
+    try{
+        await signInWithGoogle();
+    }catch(error){
+      console.log(error)
+    }
+  }
   return (
     <div className="hero bg-base-200 min-h-screen">
   <div className="hero-content flex-col lg:flex-row">
@@ -11,7 +25,7 @@ const LoginPage = () => {
       <p className="py-6">
         Please sign In to Chat with the world!
       </p>
-      <button className="btn btn-primary">Google Sign In</button>
+      <button onClick={handleLogin} className="btn btn-primary">Google Sign In</button>
     </div>
   </div>
 </div>
