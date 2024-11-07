@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { GoogleAuthProvider, onAuthStateChanged } from "firebase/auth";
-import {auth} from "../firebase";
-import { signInWithRedirect } from "firebase/auth";
+import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
+import { auth } from "../firebase";
 //Create context
 const AuthContext = createContext();
 
@@ -10,26 +9,29 @@ const AuthContext = createContext();
 // eslint-disable-next-line react/prop-types
 export const AuthProvider = ({children}) => {
     const [currUser, setCurrUser] = useState(null);
-    console.log(currUser)
-    console.log('hello')
 
     //sign in with google
     const signInWithGoogle = () => {
         const provider = new GoogleAuthProvider();
-        signInWithRedirect(auth, provider)
+        signInWithPopup(auth, provider)
 
     }
+
+    //signout
+    const logout = () => signOut(auth);
 
     const value = {
         currUser,
         setCurrUser,
-        signInWithGoogle
-    }
+        signInWithGoogle,
+        logout
 
+    }
     //set current user
 
     useEffect( () => {
         const unSubscribe = onAuthStateChanged(auth, (user) => {
+            console.log("auth state changed, user:", user.email);
             setCurrUser(user);
         });
         return unSubscribe;

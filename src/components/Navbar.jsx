@@ -1,14 +1,29 @@
+import { UserAuth } from "../context/AuthContext";
 
 const Navbar = () => {
+  const {currUser, logout} = UserAuth();
+
+
+  const handleLogout = async () => {
+
+    try {
+      await logout();
+      
+    } catch (error) {
+      console.log(error)
+      
+    }
+  }
+
+
+
   return (
-    <div className="navbar bg-base-100">
-        <div className="navbar-start">
-            <a className="btn btn-ghost text-xl">Group Chats</a>
-        </div>
-  <div className="navbar-end">
-    <a className="btn">Logout</a>
-  </div>
-</div>
+    <div className="navbar fixed z-10 bg-neutral text-neutral-content">
+      <div className="containerWrap flex justify-between">
+        <a className="btn btn-ghost normal-case text-xl">GroupChats</a>
+        {currUser ? <button onClick={handleLogout}>Logout</button> : ""}
+      </div>
+    </div>
   )
 }
 

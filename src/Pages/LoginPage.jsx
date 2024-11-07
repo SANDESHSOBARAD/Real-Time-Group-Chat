@@ -1,12 +1,13 @@
+import { useEffect } from 'react';
 import Logo from '../assets/chatapplogo.avif'
 import { UserAuth } from '../context/AuthContext'
+import { useNavigate } from 'react-router-dom';
 
 
 const LoginPage = () => {
-
+  const navigate = useNavigate();
   const {currUser, signInWithGoogle} = UserAuth();
-  console.log(currUser)
-
+  
   const handleLogin = async () => {
     try{
         await signInWithGoogle();
@@ -14,6 +15,13 @@ const LoginPage = () => {
       console.log(error)
     }
   }
+
+  useEffect( () => {
+    console.log("current user:", currUser);
+    if (currUser){
+      navigate("/chats");
+    }
+  },[currUser, navigate]);
   return (
     <div className="hero bg-base-200 min-h-screen">
   <div className="hero-content flex-col lg:flex-row">
